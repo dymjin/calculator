@@ -1,0 +1,38 @@
+html,
+body {
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+.calc-container {
+    display: flex;
+    align-content: start;
+
+    width: 400px;
+    height: 500px;
+    flex-wrap: wrap;
+    border: 2px solid black;
+    /* gap: 10px; */
+    padding: 10px;
+}
+
+.calc-button,
+.input-button {
+    width: 100px;
+    height: 100px;
+}
+
+#calc-display {
+    margin: 0;
+    padding: 0;
+    border: 0px;
+    width: 400px;
+    height: 100px;
+}

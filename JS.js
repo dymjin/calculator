@@ -1,7 +1,7 @@
 let sum, operationValue, num1, num2, op;
-const calculateBtn = document.querySelector(".calculate");
-const operationInput = document.querySelector("#operation-input");
-
+const equateBtn = document.querySelector("#calculate");
+const calcDisplay = document.querySelector("#calc-display");
+const clearBtn = document.querySelector("#clear");
 let calculator = {
     "+": (a, b) => a + b,
     "-": (a, b) => a - b,
@@ -19,19 +19,25 @@ let calculator = {
     }
 }
 
-operationInput.addEventListener('input', () => {
-    operationValue = operationInput.value;
+calcDisplay.addEventListener('input', (e) => {
+    operationValue = calcDisplay.value;
+   
 });
-calculateBtn.addEventListener('click', () => {
+
+equateBtn.addEventListener('click', () => {
     sum = calculator.calculate(operationValue);
-    operationInput.value = sum;
+    calcDisplay.value = sum;
 });
+clearBtn.addEventListener('click', () => {
+    calcDisplay.value = "";
+})
 
 window.addEventListener('keypress', (e) => {
     console.log(e.key);
+
     if (e.key == "Enter") {
         sum = calculator.calculate(operationValue);
         console.log(sum);
-        operationInput.value = sum;
+        calcDisplay.value = sum;
     }
 });
