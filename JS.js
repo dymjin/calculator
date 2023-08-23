@@ -2,42 +2,41 @@ let sum, operationValue, num1, num2, op;
 const equateBtn = document.querySelector("#calculate");
 const calcDisplay = document.querySelector("#calc-display");
 const clearBtn = document.querySelector("#clear");
+const inputBtns = document.querySelectorAll(".input-button");
+const calcBtns = document.querySelectorAll(".calc-button");
 let calculator = {
     "+": (a, b) => a + b,
     "-": (a, b) => a - b,
     "*": (a, b) => a * b,
     "/": (a, b) => a / b,
-    calculate(str) {
-        if (typeof (str) === typeof ("")) {
-            parts = str.replaceAll(/[^0-9\.\-+*\/]/g, "");
-            parts.split("");
-            return `${parts[1]}` in calculator == true ? calculator[`${parts[1]}`](+parts[0], +parts[2]) : "";
+    calculate(a, b, op) {
+        if (typeof (a) == typeof (0) && typeof (b) == typeof (0) && `${op}` in calculator) {
+            return `${op}` in calculator == true ? calculator[op](+a, +b) : "";
         } else {
-            console.log("ERROR: no numbers")
+            console.log("ERROR: Invalid operation")
             return "";
         }
     }
 }
 
-calcDisplay.addEventListener('input', (e) => {
-    operationValue = calcDisplay.value;
-   
-});
 
 equateBtn.addEventListener('click', () => {
     sum = calculator.calculate(operationValue);
-    calcDisplay.value = sum;
+    calcDisplay.textContent = sum;
 });
 clearBtn.addEventListener('click', () => {
-    calcDisplay.value = "";
+    calcDisplay.textContent = "";
 })
+inputBtns.forEach(btn => btn.addEventListener('click', () => {
+    calcDisplay.textContent += btn.textContent;
+}))
+calcBtns.forEach(btn => btn.addEventListener('click', () => {
+    calcDisplay.textContent += btn.textContent;
+}))
 
 window.addEventListener('keypress', (e) => {
-    console.log(e.key);
-
     if (e.key == "Enter") {
-        sum = calculator.calculate(operationValue);
-        console.log(sum);
-        calcDisplay.value = sum;
+        sum = calculator.calculate();
+        calcDisplay.textContent = sum;
     }
 });

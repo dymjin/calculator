@@ -24,7 +24,9 @@ body {
 }
 
 .calc-button,
-.input-button {
+.input-button,
+#clear,
+#calculate {
     width: 100px;
     height: 100px;
 }
