@@ -1,4 +1,4 @@
-let sum, displayValue, num1, num2, op;
+let sum, displayValue, num1 = "", num2 = "", op = null;
 let allowedKeys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "+", "-", "/", "*"];
 const calculateBtn = document.querySelector("#calculate");
 const calcDisplay = document.querySelector("#calc-display");
@@ -12,10 +12,10 @@ let calculator = {
     "*": (a, b) => a * b,
     "/": (a, b) => a / b,
     calculate(a, b, op) {
-        if (typeof (a) == "number" && typeof (b) == "number" && `${op}` in calculator) {
+        if (typeof (+a) == "number" && typeof (+b) == "number" && `${op}` in calculator) {
             return `${op}` in calculator == true ? calculator[op](+a, +b) : "";
         } else {
-            console.log("ERROR: Invalid operation");
+            console.log("ERROR:invalid operation");
             return "";
         }
     }
@@ -55,30 +55,39 @@ while (user inputs first num) {
 //     }
 // }
 
-// while (typeof (+calcDisplay.textContent) == "number") {
-
-
-//     continue;
-// }
 
 // for (let key in calculator) {
 //     console.log(key)
 // }
 calculateBtn.addEventListener('click', () => {
-    displayValue = calcDisplay.textContent;
-
-    sum = calculator.calculate(displayValue);
+    // displayValue = calcDisplay.textContent;
+    // displayArr = displayValue.split("");
+    // op = displayArr.filter(item => item );
+    // console.log(op);
+    // num1 = displayArr.slice(0, displayArr.indexOf(" "))
+    // console.log(num1);
+    sum = calculator.calculate(num1, num2, op);
     calcDisplay.textContent = sum;
 });
 clearBtn.addEventListener('click', () => {
     calcDisplay.textContent = "";
+    num1 = "";
+    num2 = "";
+    op = null;
 });
 inputBtns.forEach(btn => btn.addEventListener('click', () => {
     calcDisplay.textContent += btn.textContent;
+    if (op == null) {
+        num1 += btn.textContent;
+    } else if (op.length > 0) {
+        num2 += calcDisplay.textContent.split("").pop();
+    }
 }));
 calcBtns.forEach(btn => btn.addEventListener('click', () => {
     calcDisplay.textContent += btn.textContent;
-    btn.blur();
+    if (typeof (+num1) == "number" && +num1 != 0) {
+        op = calcDisplay.textContent.slice(num1.length);
+    }
 }));
 
 window.addEventListener('keypress', (e) => {
@@ -99,7 +108,11 @@ window.addEventListener('keypress', (e) => {
 
     } else if (allowedKeys.includes(+e.key) && +e.key !== NaN) {
         calcDisplay.textContent += +(e.key);
+        num1 += e.key;
     } else if (allowedKeys.includes(e.key)) {
         calcDisplay.textContent += e.key;
+        if (num1 == "") {
+            console.log('hwelo');
+        }
     }
 });
