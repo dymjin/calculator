@@ -1,4 +1,4 @@
-let sum, displayValue, num1 = "", num2 = "", op = null;
+let sum, displayValue, num1 = "", num2 = "", op = null, opList = [];
 let allowedKeys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "+", "-", "/", "*"];
 const calculateBtn = document.querySelector("#calculate");
 const calcDisplay = document.querySelector("#calc-display");
@@ -20,7 +20,6 @@ let calculator = {
         }
     }
 };
-
 /*
  if (user clicks calculate btn) {
     displayValue = calcDisplay;
@@ -45,49 +44,44 @@ while (user inputs first num) {
 }
 
 */
-
-// for (let key in calculator) {
-//     if (calcDisplay.textContent.split("").includes(key)) {
-//         parts = calcDisplay.textContent.split("");
-//         op = parts.slice(parts.length - 1);
-//         console.log(op);
-//         console.log(parts)
-//     }
-// }
-
-
-// for (let key in calculator) {
-//     console.log(key)
-// }
 calculateBtn.addEventListener('click', () => {
-    // displayValue = calcDisplay.textContent;
-    // displayArr = displayValue.split("");
-    // op = displayArr.filter(item => item );
-    // console.log(op);
-    // num1 = displayArr.slice(0, displayArr.indexOf(" "))
-    // console.log(num1);
     sum = calculator.calculate(num1, num2, op);
     calcDisplay.textContent = sum;
+    num1 = `${sum}`;
+    num2 = "";
+    op = null;
 });
+
 clearBtn.addEventListener('click', () => {
     calcDisplay.textContent = "";
     num1 = "";
     num2 = "";
     op = null;
 });
+
 inputBtns.forEach(btn => btn.addEventListener('click', () => {
     calcDisplay.textContent += btn.textContent;
     if (op == null) {
         num1 += btn.textContent;
-    } else if (op.length > 0) {
+    } else if (op !== null) {
         num2 += calcDisplay.textContent.split("").pop();
     }
 }));
+
 calcBtns.forEach(btn => btn.addEventListener('click', () => {
     calcDisplay.textContent += btn.textContent;
-    if (typeof (+num1) == "number" && +num1 != 0) {
-        op = calcDisplay.textContent.slice(num1.length);
+    opList = calcDisplay.textContent
+        .replaceAll(/[^-+*\/]/g, "")
+        .split("");
+    if (opList.length > 1) {
+        calcDisplay.textContent = calculator.calculate(num1, num2, op) + btn.textContent;
+        num1 = calcDisplay.textContent.replaceAll(/[^0-9]/g, "");
+        num2 = "";
+        op = btn.textContent;
+    } else if (typeof (+num1) == "number") {
+        op = calcDisplay.textContent.slice(num1.length)[0];
     }
+
 }));
 
 window.addEventListener('keypress', (e) => {
@@ -97,15 +91,17 @@ window.addEventListener('keypress', (e) => {
         calcDisplay.textContent = sum;
     } else if (e.key == "Delete") {
         calcDisplay.textContent = "";
+        num1 = "";
+        num2 = "";
+        op = null;
     } else if (e.key == "c") {
         let calcDisplayArr = calcDisplay.textContent.split("");
         if (calcDisplayArr.length < 1) {
             return;
-        } else {
+        } else if (num2 !== "") {
             calcDisplayArr.splice(calcDisplayArr.length - 1, 1);
             calcDisplay.textContent = calcDisplayArr.join("");
         }
-
     } else if (allowedKeys.includes(+e.key) && +e.key !== NaN) {
         calcDisplay.textContent += +(e.key);
         num1 += e.key;
