@@ -50,6 +50,13 @@ calculateBtn.addEventListener('click', () => {
     num1 = `${sum}`;
     num2 = "";
     op = null;
+    if (num1 == "" || op == null || num2 == "") {
+        num1 = "";
+        num2 = "";
+        op = null;
+        calcDisplay.textContent = "";
+        console.log('ERROR:one or more fields are empty');
+    }
 });
 
 clearBtn.addEventListener('click', () => {
