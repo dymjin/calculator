@@ -20,36 +20,8 @@ let calculator = {
         }
     }
 };
-/*
- if (user clicks calculate btn) {
-    displayValue = calcDisplay;
-    store calculate(first num, second num, operator) in sum
-    update calcDisplay with sum
-}
 
-while (user inputs first num) {
-    if (user input is any operator(+/-*)) {
-        split displayValue and slice off end value,
-        store sliced off value as operator
-        store rest of nums.join("") as first num
-        if (second num == undefined) {
-            continue
-        } else if (typeof(+second num) == typeof(0)) {
-            calculator.calculate(first num, second num, operator)
-            first num = null;
-            second num = nul;
-            operator = null;
-        }
-    }
-}
-
-*/
 calculateBtn.addEventListener('click', () => {
-    sum = calculator.calculate(num1, num2, op);
-    calcDisplay.textContent = sum;
-    num1 = `${sum}`;
-    num2 = "";
-    op = null;
     if (num1 == "" || op == null || num2 == "") {
         num1 = "";
         num2 = "";
@@ -57,6 +29,12 @@ calculateBtn.addEventListener('click', () => {
         calcDisplay.textContent = "";
         console.log('ERROR:one or more fields are empty');
     }
+    sum = calculator.calculate(num1, num2, op);
+    calcDisplay.textContent = sum;
+    ans = `${sum}`
+    num1 = "";
+    num2 = "";
+    op = null;
 });
 
 clearBtn.addEventListener('click', () => {
@@ -80,7 +58,7 @@ calcBtns.forEach(btn => btn.addEventListener('click', () => {
     opList = calcDisplay.textContent
         .replaceAll(/[^-+*\/]/g, "")
         .split("");
-    if (opList.length > 1) {
+    if (opList.length > 1 && num1 !== "" && num2 !== "") {
         calcDisplay.textContent = calculator.calculate(num1, num2, op) + btn.textContent;
         num1 = calcDisplay.textContent.replaceAll(/[^0-9]/g, "");
         num2 = "";
@@ -88,7 +66,6 @@ calcBtns.forEach(btn => btn.addEventListener('click', () => {
     } else if (typeof (+num1) == "number") {
         op = calcDisplay.textContent.slice(num1.length)[0];
     }
-
 }));
 
 window.addEventListener('keypress', (e) => {
@@ -114,8 +91,6 @@ window.addEventListener('keypress', (e) => {
         num1 += e.key;
     } else if (allowedKeys.includes(e.key)) {
         calcDisplay.textContent += e.key;
-        if (num1 == "") {
-            console.log('hwelo');
-        }
+
     }
 });
