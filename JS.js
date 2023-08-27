@@ -32,7 +32,7 @@ calculateBtn.addEventListener('click', () => {
     sum = calculator.calculate(num1, num2, op);
     calcDisplay.textContent = sum;
     ans = `${sum}`
-    num1 = "";
+    num1 = ans;
     num2 = "";
     op = null;
 });
@@ -42,6 +42,7 @@ clearBtn.addEventListener('click', () => {
     num1 = "";
     num2 = "";
     op = null;
+    opList = [];
 });
 
 inputBtns.forEach(btn => btn.addEventListener('click', () => {
@@ -54,30 +55,23 @@ inputBtns.forEach(btn => btn.addEventListener('click', () => {
 }));
 
 opBtns.forEach(btn => btn.addEventListener('click', () => {
-
-    calcDisplay.textContent += btn.textContent;
-    opList = calcDisplay.textContent
-        .replaceAll(/[^-+*\/]/g, "")
-        .split("");
-   
-    if (btn.textContent == "-" && num1 == "") {
+    if (num1 == "" && btn.textContent == "-" && opList < 1) {
+        calcDisplay.textContent += btn.textContent;
         num1 += "-";
-    } else if (opList.length > 1 && num1 !== "" && num2 !== "") {
-        sum = calculator.calculate(num1, num2, op);
-        ans = `${sum}`;
-        if (ans.split("").includes("-")) {
-            ans.split("").unshift("-");
-        }
-        calcDisplay.textContent = sum + btn.textContent;
-        num1 = ans;
+    } else if (num1 !== "-" && num1 !== "" && opList <= 2) {
+        console.log('hello');
+        op = btn.textContent;
+        calcDisplay.textContent += btn.textContent;
+        opList.push(btn.textContent);
+    } else if (num1 !== "" && num2 !== "") {
+        ans = calculator.calculate(num1, num2, op);
+        calcDisplay.textContent = ans + btn.textContent;
+        num1 = `${ans}`;
         num2 = "";
         op = btn.textContent;
-    } else if (opList.length > 1 && num2 == "") {
-        calcDisplay.textContent = num1 + op + num2;
-    } else if (typeof (+num1) == "number") {
-        op = calcDisplay.textContent.slice(num1.length)[0];
+        opList = [];
+        opList.push(btn.textContent)
     }
-
 }));
 
 window.addEventListener('keypress', (e) => {
