@@ -4,7 +4,7 @@ const calculateBtn = document.querySelector("#calculate");
 const calcDisplay = document.querySelector("#calc-display");
 const clearBtn = document.querySelector("#clear");
 const inputBtns = document.querySelectorAll(".input-button");
-const calcBtns = document.querySelectorAll(".calc-button");
+const opBtns = document.querySelectorAll(".op-button");
 
 let calculator = {
     "+": (a, b) => a + b,
@@ -22,7 +22,7 @@ let calculator = {
 };
 
 calculateBtn.addEventListener('click', () => {
-    if (num1 == "" || op == null || num2 == "") {
+    if (num1 == "" || op == null || num2 == "" || num1 == "-" || num2 == "-") {
         num1 = "";
         num2 = "";
         op = null;
@@ -53,27 +53,36 @@ inputBtns.forEach(btn => btn.addEventListener('click', () => {
     }
 }));
 
-calcBtns.forEach(btn => btn.addEventListener('click', () => {
+opBtns.forEach(btn => btn.addEventListener('click', () => {
+
     calcDisplay.textContent += btn.textContent;
     opList = calcDisplay.textContent
         .replaceAll(/[^-+*\/]/g, "")
         .split("");
-    if (opList.length > 1 && num1 !== "" && num2 !== "") {
-        calcDisplay.textContent = calculator.calculate(num1, num2, op) + btn.textContent;
-        num1 = calcDisplay.textContent.replaceAll(/[^0-9]/g, "");
+   
+    if (btn.textContent == "-" && num1 == "") {
+        num1 += "-";
+    } else if (opList.length > 1 && num1 !== "" && num2 !== "") {
+        sum = calculator.calculate(num1, num2, op);
+        ans = `${sum}`;
+        if (ans.split("").includes("-")) {
+            ans.split("").unshift("-");
+        }
+        calcDisplay.textContent = sum + btn.textContent;
+        num1 = ans;
         num2 = "";
         op = btn.textContent;
+    } else if (opList.length > 1 && num2 == "") {
+        calcDisplay.textContent = num1 + op + num2;
     } else if (typeof (+num1) == "number") {
         op = calcDisplay.textContent.slice(num1.length)[0];
     }
+
 }));
 
 window.addEventListener('keypress', (e) => {
     if (e.key == "Enter") {
-        // displayValue = calcDisplay.textContent;
-        // sum = calculator.calculate(displayValue);
-        // calcDisplay.textContent = sum;
-        if (num1 == "" || op == null || num2 == "") {
+        if (num1 == "" || op == null || num2 == "" || num1 == "-" || num2 == "-") {
             num1 = "";
             num2 = "";
             op = null;
@@ -108,16 +117,23 @@ window.addEventListener('keypress', (e) => {
         }
     } else if (allowedKeys.includes(e.key)) {
         calcDisplay.textContent += e.key;
-        opList = calcDisplay.textContent
-            .replaceAll(/[^-+*\/]/g, "")
-            .split("");
-        if (opList.length > 1 && num1 !== "" && num2 !== "") {
-            calcDisplay.textContent = calculator.calculate(num1, num2, op) + e.key;
-            num1 = calcDisplay.textContent.replaceAll(/[^0-9]/g, "");
+        if (e.key == "-" && num1 == "") {
+            num1 += "-";
+        } else if (opList.length > 1 && num1 !== "" && num2 !== "") {
+            sum = calculator.calculate(num1, num2, op);
+            ans = `${sum}`;
+            if (ans.split("").includes("-")) {
+                ans.split("").unshift("-");
+            }
+            calcDisplay.textContent = sum + e.key;
+            num1 = ans;
             num2 = "";
             op = e.key;
+        } else if (opList.length > 1 && num2 == "") {
+            calcDisplay.textContent = num1 + op + num2;
         } else if (typeof (+num1) == "number") {
             op = calcDisplay.textContent.slice(num1.length)[0];
         }
     }
 });
+

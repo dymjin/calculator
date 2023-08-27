@@ -23,7 +23,7 @@ body {
     padding: 10px;
 }
 
-.calc-button,
+.op-button,
 .input-button,
 #clear,
 #calculate {
@@ -38,14 +38,14 @@ body {
 }
 
 .input-button:hover,
-.calc-button:hover,
+.op-button:hover,
 #clear:hover,
 #calculate:hover {
     background-color: rgb(192, 192, 192);
 }
 
 .input-button:active,
-.calc-button:active,
+.op-button:active,
 #clear:active,
 #calculate:active {
     background-color: blue;
