@@ -5,6 +5,7 @@ const calcDisplay = document.querySelector("#calc-display");
 const clearBtn = document.querySelector("#clear");
 const inputBtns = document.querySelectorAll(".input-button");
 const opBtns = document.querySelectorAll(".op-button");
+const inverseBtn = document.querySelector("#inverse");
 
 let calculator = {
     "+": (a, b) => a + b,
@@ -35,6 +36,7 @@ calculateBtn.addEventListener('click', () => {
     num1 = ans;
     num2 = "";
     op = null;
+    opList = [];
 });
 
 clearBtn.addEventListener('click', () => {
@@ -44,6 +46,16 @@ clearBtn.addEventListener('click', () => {
     op = null;
     opList = [];
 });
+
+inverseBtn.addEventListener('click', () => {
+    if (num1 !== "" && num2 == "") {
+        num1 = num1 * -1;
+        calcDisplay.textContent = num1 + op + num2
+    } else if (num1 !== "" && num2 !== "") {
+        num2 = num2 * -1;
+        calcDisplay.textContent = num1 + op + num2
+    }
+})
 
 inputBtns.forEach(btn => btn.addEventListener('click', () => {
     calcDisplay.textContent += btn.textContent;
@@ -55,22 +67,23 @@ inputBtns.forEach(btn => btn.addEventListener('click', () => {
 }));
 
 opBtns.forEach(btn => btn.addEventListener('click', () => {
-    if (num1 == "" && btn.textContent == "-" && opList < 1) {
-        calcDisplay.textContent += btn.textContent;
-        num1 += "-";
-    } else if (num1 !== "-" && num1 !== "" && opList <= 2) {
-        console.log('hello');
+    if (num1 !== "" && opList < 1 && btn.textContent !== "+/-") {
         op = btn.textContent;
-        calcDisplay.textContent += btn.textContent;
         opList.push(btn.textContent);
-    } else if (num1 !== "" && num2 !== "") {
+        calcDisplay.textContent += btn.textContent;
+    } else if (btn.textContent !== "+/-" && num1 !== "" && num2 !== "") {
+        console.log('hello')
         ans = calculator.calculate(num1, num2, op);
         calcDisplay.textContent = ans + btn.textContent;
         num1 = `${ans}`;
         num2 = "";
         op = btn.textContent;
-        opList = [];
         opList.push(btn.textContent)
+    } else if (btn.textContent !== "+/-") {
+        op = btn.textContent
+        calcDisplay.textContent = num1 + op;
+        opList = [];
+        opList.push(btn.textContent);
     }
 }));
 
