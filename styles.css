@@ -16,7 +16,7 @@ body {
     display: flex;
     align-content: start;
     width: 400px;
-    height: 500px;
+    height: 600px;
     flex-wrap: wrap;
     border: 2px solid black;
     /* gap: 10px; */
