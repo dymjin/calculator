@@ -94,12 +94,12 @@ opBtns.forEach(btn => btn.addEventListener('click', () => {
     }
 }));
 
-window.addEventListener('keypress', (e) => {
+window.addEventListener('keydown', (e) => {
     if (e.key == "Enter") {
         if (num1 == null || op == null || num2 == null) {
             num1 = null;
             num2 = null;
-            op = null; 
+            op = null;
             calcDisplay.textContent = "";
             console.log('ERROR:one or more fields are empty');
             return;
@@ -116,14 +116,16 @@ window.addEventListener('keypress', (e) => {
         num2 = null;
         op = null;
         opList = [];
-    } else if (e.key == "c") {
-        let calcDisplayArr = calcDisplay.textContent.split("");
-        if (calcDisplayArr.length < 1) {
-            return;
-        } else if (num2 !== "") {
-            calcDisplayArr.splice(calcDisplayArr.length - 1, 1);
-            calcDisplay.textContent = calcDisplayArr.join("");
+    } else if (e.key == "Backspace") {
+        if (num1.split("").length > 1) {
+            num1Parts.splice(num1.length - 1).join("")
+            console.log(num1Parts)
         }
+        /*
+        if num1 is not 0 or empty string, delete last member of num1, update display
+        if num1 is empty string or 0, set display to empty
+        */
+
     } else if (allowedKeys.includes(+e.key) && +e.key !== NaN) {
         calcDisplay.textContent += e.key;
         if (op == null && num1 == null) {
