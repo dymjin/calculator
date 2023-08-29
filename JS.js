@@ -1,5 +1,5 @@
 let ans, displayValue, num1 = null, num2 = null, op = null, opList = [];
-let allowedKeys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "+", "-", "/", "*"];
+let allowedKeys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ".", "+", "-", "/", "*"];
 const calculateBtn = document.querySelector("#calculate");
 const calcDisplay = document.querySelector("#calc-display");
 const clearBtn = document.querySelector("#clear");
@@ -58,15 +58,31 @@ inverseBtn.addEventListener('click', () => {
 })
 
 inputBtns.forEach(btn => btn.addEventListener('click', () => {
-    calcDisplay.textContent += btn.textContent;
-    if (op == null && num1 == null) {
-        num1 = btn.textContent;
-    } else if (op == null && num1 !== null) {
-        num1 += btn.textContent;
-    } else if (op !== null && num2 == null) {
-        num2 = btn.textContent;
-    } else if (op !== null && num2 !== null) {
-        num2 += btn.textContent;
+    if (btn.textContent !== ".") {
+        calcDisplay.textContent += btn.textContent;
+        if (num1 == null && btn.textContent !== ".") {
+            num1 = btn.textContent;
+        } else if (op == null && num1 !== null && btn.textContent !== ".") {
+            num1 += btn.textContent;
+        } else if (op !== null && num2 == null && btn.textContent !== ".") {
+            num2 = btn.textContent;
+        } else if (op !== null && num2 !== null && btn.textContent !== ".") {
+            num2 += btn.textContent;
+        }
+    } else if (btn.textContent == ".") {
+        if (num1 == null) {
+            num1 = "0.";
+            calcDisplay.textContent += num1;
+        } else if (num2 == null && num1 !== null && op !== null) {
+            num2 = "0.";
+            calcDisplay.textContent += num2;
+        } else if (num1 !== null && !num1.split("").includes(".")) {
+            num1 += btn.textContent;
+            calcDisplay.textContent += ".";
+        } else if (num2 !== null && !num2.split("").includes(".") && op !== null) {
+            num2 += btn.textContent;
+            calcDisplay.textContent += ".";
+        }
     }
 }));
 
@@ -95,6 +111,7 @@ opBtns.forEach(btn => btn.addEventListener('click', () => {
 }));
 
 window.addEventListener('keydown', (e) => {
+    console.log(typeof (+e.key))
     if (e.key == "Enter") {
         if (num1 == null || op == null || num2 == null) {
             num1 = null;
@@ -126,16 +143,32 @@ window.addEventListener('keydown', (e) => {
         if num1 is empty string or 0, set display to empty
         */
 
-    } else if (allowedKeys.includes(+e.key) && +e.key !== NaN) {
-        calcDisplay.textContent += e.key;
-        if (op == null && num1 == null) {
-            num1 = e.key;
-        } else if (op == null && num1 !== null) {
-            num1 += e.key;
-        } else if (op !== null && num2 == null) {
-            num2 = e.key;
-        } else if (op !== null && num2 !== null) {
-            num2 += e.key;
+    } else if (allowedKeys.includes(+e.key) && typeof (+e.key) == "number" || e.key == ".") {
+        if (e.key !== ".") {
+            calcDisplay.textContent += e.key;
+            if (num1 == null && e.key !== ".") {
+                num1 = e.key;
+            } else if (op == null && num1 !== null && e.key !== ".") {
+                num1 += e.key;
+            } else if (op !== null && num2 == null && e.key !== ".") {
+                num2 = e.key;
+            } else if (op !== null && num2 !== null && e.key !== ".") {
+                num2 += e.key;
+            }
+        } else if (e.key == ".") {
+            if (num1 == null) {
+                num1 = "0.";
+                calcDisplay.textContent += num1;
+            } else if (num2 == null && num1 !== null && op !== null) {
+                num2 = "0.";
+                calcDisplay.textContent += num2;
+            } else if (num1 !== null && !num1.split("").includes(".")) {
+                num1 += e.key;
+                calcDisplay.textContent += ".";
+            } else if (num2 !== null && !num2.split("").includes(".") && op !== null) {
+                num2 += e.key;
+                calcDisplay.textContent += ".";
+            }
         }
     } else if (allowedKeys.includes(e.key)) {
         if (num1 !== null && opList < 1 && e.key !== "+/-") {
