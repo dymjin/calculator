@@ -102,6 +102,12 @@ inverseBtn.addEventListener('click', () => {
 })
 
 inputBtns.forEach(btn => btn.addEventListener('click', () => {
+    if (typeof (num1) == "number") {
+        num1 = num1.toString();
+    }
+    if (typeof (num2) == "number") {
+        num2 = num2.toString();
+    }
     if (btn.textContent !== ".") {
         calcDisplay.textContent += btn.textContent;
         if (num1 == null && btn.textContent !== ".") {
@@ -216,6 +222,12 @@ window.addEventListener('keydown', (e) => {
             }
         }
     } else if (allowedKeys.includes(+e.key) && typeof (+e.key) == "number" || e.key == ".") {
+        if (typeof (num1) == "number") {
+            num1 = num1.toString();
+        }
+        if (typeof (num2) == "number") {
+            num2 = num2.toString();
+        }
         if (e.key !== ".") {
             calcDisplay.textContent += e.key;
             if (num1 == null && e.key !== ".") {
@@ -230,15 +242,15 @@ window.addEventListener('keydown', (e) => {
         } else if (e.key == ".") {
             if (num1 == null) {
                 num1 = "0.";
-                calcDisplay.textContent += num1;
+                calcDisplay.textContent += ".";
             } else if (num2 == null && num1 !== null && op !== null) {
                 num2 = "0.";
-                calcDisplay.textContent += num2;
-            } else if (num1 !== null && !num1.split("").includes(".")) {
-                num1 += e.key;
                 calcDisplay.textContent += ".";
             } else if (num2 !== null && !num2.split("").includes(".") && op !== null) {
                 num2 += e.key;
+                calcDisplay.textContent += ".";
+            } else if (num1 !== null && !num1.split("").includes(".")) {
+                num1 += e.key;
                 calcDisplay.textContent += ".";
             }
         }
