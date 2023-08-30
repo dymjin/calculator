@@ -6,6 +6,7 @@ const clearBtn = document.querySelector("#clear");
 const inputBtns = document.querySelectorAll(".input-button");
 const opBtns = document.querySelectorAll(".op-button");
 const inverseBtn = document.querySelector("#inverse");
+const undoBtn = document.querySelector("#undo");
 
 let calculator = {
     "+": (a, b) => a + b,
@@ -46,6 +47,38 @@ clearBtn.addEventListener('click', () => {
     op = null;
     opList = [];
 });
+
+undoBtn.addEventListener('click', () => {
+    if (typeof (num1) == "number") {
+        num1 = num1.toString();
+    }
+    if (num2 !== null) {
+        if (num2.length == 1) {
+            num2 = null;
+            calcDisplay.textContent = num1 + op;
+        } else {
+            arr = num2.split("");
+            arr.pop();
+            num2 = arr.join("");
+            calcDisplay.textContent = calcDisplay.textContent.substring(0, calcDisplay.textContent.length - 1);
+        }
+    }
+    else if (op !== null) {
+        op = null;
+        calcDisplay.textContent = num1;
+    }
+    else if (num1 !== null) {
+        if (num1.length == 1) {
+            num1 = null;
+            calcDisplay.textContent = "";
+        } else {
+            arr = num1.split("");
+            arr.pop();
+            num1 = arr.join("");
+            calcDisplay.textContent = calcDisplay.textContent.substring(0, calcDisplay.textContent.length - 1);
+        }
+    }
+})
 
 inverseBtn.addEventListener('click', () => {
     if (num1 !== null && num2 == null) {
@@ -111,7 +144,6 @@ opBtns.forEach(btn => btn.addEventListener('click', () => {
 }));
 
 window.addEventListener('keydown', (e) => {
-    console.log(typeof (+e.key))
     if (e.key == "Enter") {
         if (num1 == null || op == null || num2 == null) {
             num1 = null;
@@ -134,15 +166,35 @@ window.addEventListener('keydown', (e) => {
         op = null;
         opList = [];
     } else if (e.key == "Backspace") {
-        if (num1.split("").length > 1) {
-            num1Parts.splice(num1.length - 1).join("")
-            console.log(num1Parts)
+        if (typeof (num1) == "number") {
+            num1 = num1.toString();
         }
-        /*
-        if num1 is not 0 or empty string, delete last member of num1, update display
-        if num1 is empty string or 0, set display to empty
-        */
-
+        if (num2 !== null) {
+            if (num2.length == 1) {
+                num2 = null;
+                calcDisplay.textContent = num1 + op;
+            } else {
+                arr = num2.split("");
+                arr.pop();
+                num2 = arr.join("");
+                calcDisplay.textContent = calcDisplay.textContent.substring(0, calcDisplay.textContent.length - 1);
+            }
+        }
+        else if (op !== null) {
+            op = null;
+            calcDisplay.textContent = num1;
+        }
+        else if (num1 !== null) {
+            if (num1.length == 1) {
+                num1 = null;
+                calcDisplay.textContent = "";
+            } else {
+                arr = num1.split("");
+                arr.pop();
+                num1 = arr.join("");
+                calcDisplay.textContent = calcDisplay.textContent.substring(0, calcDisplay.textContent.length - 1);
+            }
+        }
     } else if (allowedKeys.includes(+e.key) && typeof (+e.key) == "number" || e.key == ".") {
         if (e.key !== ".") {
             calcDisplay.textContent += e.key;

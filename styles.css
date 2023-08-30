@@ -26,7 +26,8 @@ body {
 .op-button,
 .input-button,
 #clear,
-#calculate {
+#calculate,
+#undo {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,14 +41,16 @@ body {
 .input-button:hover,
 .op-button:hover,
 #clear:hover,
-#calculate:hover {
+#calculate:hover,
+#undo:hover {
     background-color: rgb(192, 192, 192);
 }
 
 .input-button:active,
 .op-button:active,
 #clear:active,
-#calculate:active {
+#calculate:active,
+#undo:active {
     background-color: blue;
 }
 
