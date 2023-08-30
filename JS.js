@@ -51,9 +51,17 @@ clearBtn.addEventListener('click', () => {
 undoBtn.addEventListener('click', () => {
     if (typeof (num1) == "number") {
         num1 = num1.toString();
+        console.log(num1);
+    }
+    if (typeof (num2) == "number") {
+        num2 = num2.toString();
+        console.log(num2);
     }
     if (num2 !== null) {
         if (num2.length == 1) {
+            num2 = null;
+            calcDisplay.textContent = num1 + op;
+        } else if (num2.length == 2 && num2[0] == "-") {
             num2 = null;
             calcDisplay.textContent = num1 + op;
         } else {
@@ -71,6 +79,9 @@ undoBtn.addEventListener('click', () => {
         if (num1.length == 1) {
             num1 = null;
             calcDisplay.textContent = "";
+        } else if (num1.length == 2 && num1[0] == "-") {
+            num1 = null;
+            calcDisplay.textContent = num1;
         } else {
             arr = num1.split("");
             arr.pop();
@@ -105,15 +116,15 @@ inputBtns.forEach(btn => btn.addEventListener('click', () => {
     } else if (btn.textContent == ".") {
         if (num1 == null) {
             num1 = "0.";
-            calcDisplay.textContent += num1;
+            calcDisplay.textContent += ".";
         } else if (num2 == null && num1 !== null && op !== null) {
             num2 = "0.";
-            calcDisplay.textContent += num2;
-        } else if (num1 !== null && !num1.split("").includes(".")) {
-            num1 += btn.textContent;
             calcDisplay.textContent += ".";
         } else if (num2 !== null && !num2.split("").includes(".") && op !== null) {
             num2 += btn.textContent;
+            calcDisplay.textContent += ".";
+        } else if (num1 !== null && !num1.split("").includes(".")) {
+            num1 += btn.textContent;
             calcDisplay.textContent += ".";
         }
     }
@@ -169,8 +180,14 @@ window.addEventListener('keydown', (e) => {
         if (typeof (num1) == "number") {
             num1 = num1.toString();
         }
+        if (typeof (num2) == "number") {
+            num2 = num2.toString();
+        }
         if (num2 !== null) {
             if (num2.length == 1) {
+                num2 = null;
+                calcDisplay.textContent = num1 + op;
+            } else if (num2.length == 2 && num2[0] == "-") {
                 num2 = null;
                 calcDisplay.textContent = num1 + op;
             } else {
@@ -188,6 +205,9 @@ window.addEventListener('keydown', (e) => {
             if (num1.length == 1) {
                 num1 = null;
                 calcDisplay.textContent = "";
+            } else if (num1.length == 2 && num1[0] == "-") {
+                num1 = null;
+                calcDisplay.textContent = num1;
             } else {
                 arr = num1.split("");
                 arr.pop();
