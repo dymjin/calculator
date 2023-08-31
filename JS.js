@@ -8,6 +8,22 @@ const opBtns = document.querySelectorAll(".op-button");
 const inverseBtn = document.querySelector("#inverse");
 const undoBtn = document.querySelector("#undo");
 
+let roundToDecimals = (num) => {
+    decimals = num.slice(num.indexOf(".") + 1);
+    while (decimals.slice(decimals.length - 1) == "0") {
+        arr = decimals.split("");
+        arr.pop();
+        decimals = arr.join("");
+    }
+    if (decimals.length < 8) {
+        return (+num).toFixed(decimals.length);
+    } else if (decimals[8] == "0") {
+        return (+num).toFixed(8);
+    } else {
+        return Math.round((+num));
+    }
+}
+
 let calculator = {
     "+": (a, b) => a + b,
     "-": (a, b) => a - b,
@@ -33,6 +49,11 @@ calculateBtn.addEventListener('click', () => {
         return;
     }
     ans = calculator.calculate(num1, num2, op);
+    ans = ans.toString();
+    if (ans.split("").includes(".")) {
+        console.log(ans)
+        ans = roundToDecimals(ans);
+    }
     calcDisplay.textContent = ans;
     num1 = ans;
     num2 = null;
@@ -51,11 +72,9 @@ clearBtn.addEventListener('click', () => {
 undoBtn.addEventListener('click', () => {
     if (typeof (num1) == "number") {
         num1 = num1.toString();
-        console.log(num1);
     }
     if (typeof (num2) == "number") {
         num2 = num2.toString();
-        console.log(num2);
     }
     if (num2 !== null) {
         if (num2.length == 1) {
@@ -143,6 +162,11 @@ opBtns.forEach(btn => btn.addEventListener('click', () => {
         calcDisplay.textContent += btn.textContent;
     } else if (btn.textContent !== "+/-" && num1 !== null && num2 !== null) {
         ans = calculator.calculate(num1, num2, op);
+        ans = ans.toString();
+        if (ans.split("").includes(".")) {
+            console.log(ans)
+            ans = roundToDecimals(ans);
+        }
         calcDisplay.textContent = ans + btn.textContent;
         num1 = `${ans}`;
         num2 = null;
@@ -171,6 +195,11 @@ window.addEventListener('keydown', (e) => {
             return;
         }
         ans = calculator.calculate(num1, num2, op);
+        ans = ans.toString();
+        if (ans.split("").includes(".")) {
+            console.log(ans)
+            ans = roundToDecimals(ans);
+        }
         calcDisplay.textContent = ans;
         num1 = ans;
         num2 = null;
@@ -261,6 +290,11 @@ window.addEventListener('keydown', (e) => {
             calcDisplay.textContent += e.key;
         } else if (e.key !== "+/-" && num1 !== null && num2 !== null) {
             ans = calculator.calculate(num1, num2, op);
+            ans = ans.toString();
+            if (ans.split("").includes(".")) {
+                console.log(ans)
+                ans = roundToDecimals(ans);
+            }
             calcDisplay.textContent = ans + e.key;
             num1 = `${ans}`;
             num2 = null;
