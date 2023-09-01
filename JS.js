@@ -17,18 +17,16 @@ let roundToDecimals = (num) => {
     }
     if (decimals.length < 8) {
         return (+num).toFixed(decimals.length);
-    } else if (decimals[8] == "0") {
-        return (+num).toFixed(8);
     } else {
-        return Math.round((+num));
+        return (+num).toFixed(2) == "0.00" ? 0 : 0;
     }
 }
 
 let calculator = {
-    "+": (a, b) => a + b,
-    "-": (a, b) => a - b,
-    "*": (a, b) => a * b,
-    "/": (a, b) => a / b,
+    "+": (a, b) => (a + b),
+    "-": (a, b) => (a - b),
+    "*": (a, b) => (a * b),
+    "/": (a, b) => (a / b),
     calculate(a, b, op) {
         if (a !== null && b !== null && `${op}` in calculator) {
             return `${op}` in calculator == true ? calculator[op](+a, +b) : "";
@@ -51,7 +49,6 @@ calculateBtn.addEventListener('click', () => {
     ans = calculator.calculate(num1, num2, op);
     ans = ans.toString();
     if (ans.split("").includes(".")) {
-        console.log(ans)
         ans = roundToDecimals(ans);
     }
     calcDisplay.textContent = ans;
@@ -70,12 +67,8 @@ clearBtn.addEventListener('click', () => {
 });
 
 undoBtn.addEventListener('click', () => {
-    if (typeof (num1) == "number") {
-        num1 = num1.toString();
-    }
-    if (typeof (num2) == "number") {
-        num2 = num2.toString();
-    }
+    if (typeof (num1) == "number") num1 = num1.toString();
+    if (typeof (num2) == "number") num2 = num2.toString();
     if (num2 !== null) {
         if (num2.length == 1) {
             num2 = null;
@@ -121,12 +114,8 @@ inverseBtn.addEventListener('click', () => {
 })
 
 inputBtns.forEach(btn => btn.addEventListener('click', () => {
-    if (typeof (num1) == "number") {
-        num1 = num1.toString();
-    }
-    if (typeof (num2) == "number") {
-        num2 = num2.toString();
-    }
+    if (typeof (num1) == "number") num1 = num1.toString();
+    if (typeof (num2) == "number") num2 = num2.toString();
     if (btn.textContent !== ".") {
         calcDisplay.textContent += btn.textContent;
         if (num1 == null && btn.textContent !== ".") {
@@ -139,17 +128,17 @@ inputBtns.forEach(btn => btn.addEventListener('click', () => {
             num2 += btn.textContent;
         }
     } else if (btn.textContent == ".") {
-        if (num1 == null) {
-            num1 = "0.";
-            calcDisplay.textContent += ".";
-        } else if (num2 == null && num1 !== null && op !== null) {
+        if (op !== null && num2 == null) {
             num2 = "0.";
+            calcDisplay.textContent += "0.";
+        } else if (op !== null && num2 !== null && !num2.split("").includes(".")) {
+            num2 += ".";
             calcDisplay.textContent += ".";
-        } else if (num2 !== null && !num2.split("").includes(".") && op !== null) {
-            num2 += btn.textContent;
-            calcDisplay.textContent += ".";
-        } else if (num1 !== null && !num1.split("").includes(".")) {
-            num1 += btn.textContent;
+        } else if (op == null && num1 == null) {
+            num1 = "0.";
+            calcDisplay.textContent += "0.";
+        } else if (op == null && num1 !== null && !num1.split("").includes(".")) {
+            num1 += ".";
             calcDisplay.textContent += ".";
         }
     }
@@ -197,7 +186,6 @@ window.addEventListener('keydown', (e) => {
         ans = calculator.calculate(num1, num2, op);
         ans = ans.toString();
         if (ans.split("").includes(".")) {
-            console.log(ans)
             ans = roundToDecimals(ans);
         }
         calcDisplay.textContent = ans;
@@ -251,12 +239,8 @@ window.addEventListener('keydown', (e) => {
             }
         }
     } else if (allowedKeys.includes(+e.key) && typeof (+e.key) == "number" || e.key == ".") {
-        if (typeof (num1) == "number") {
-            num1 = num1.toString();
-        }
-        if (typeof (num2) == "number") {
-            num2 = num2.toString();
-        }
+        if (typeof (num1) == "number") num1 = num1.toString();
+        if (typeof (num2) == "number") num2 = num2.toString();
         if (e.key !== ".") {
             calcDisplay.textContent += e.key;
             if (num1 == null && e.key !== ".") {
@@ -269,17 +253,17 @@ window.addEventListener('keydown', (e) => {
                 num2 += e.key;
             }
         } else if (e.key == ".") {
-            if (num1 == null) {
-                num1 = "0.";
-                calcDisplay.textContent += ".";
-            } else if (num2 == null && num1 !== null && op !== null) {
+            if (op !== null && num2 == null) {
                 num2 = "0.";
+                calcDisplay.textContent += "0.";
+            } else if (op !== null && num2 !== null && !num2.split("").includes(".")) {
+                num2 += ".";
                 calcDisplay.textContent += ".";
-            } else if (num2 !== null && !num2.split("").includes(".") && op !== null) {
-                num2 += e.key;
-                calcDisplay.textContent += ".";
-            } else if (num1 !== null && !num1.split("").includes(".")) {
-                num1 += e.key;
+            } else if (op == null && num1 == null) {
+                num1 = "0.";
+                calcDisplay.textContent += "0.";
+            } else if (op == null && num1 !== null && !num1.split("").includes(".")) {
+                num1 += ".";
                 calcDisplay.textContent += ".";
             }
         }
