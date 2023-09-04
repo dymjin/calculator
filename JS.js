@@ -112,14 +112,14 @@ inverseBtn.addEventListener('click', () => {
     if (num1 !== null && num2 == null && op == null) {
         num1 = num1 * -1;
         num1 = num1.toString();
-        if (num1.length > 9) {
+        if (num1.length > 11) {
             num1 = (+num1).toExponential(2);
         }
         calcDisplay.textContent = num1;
     } else if (num1 !== null && num2 == null && op !== null) {
         num1 = num1 * -1;
         num1 = num1.toString();
-        if (num1.length > 9) {
+        if (num1.length > 11) {
             num1 = (+num1).toExponential(2);
         }
         calcDisplay.textContent = num1 + op;
